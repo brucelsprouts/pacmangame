@@ -36,11 +36,17 @@ public class Ghost extends Mover {
           if (isValidDest(x, y + gridSize)) y += increment;
           break;
         }
-      }
+    }
 
-      public void updatePellet() {
-        int tempX,
-        tempY;
+    private char newDirection() {
+        return 0;
+    }
+
+    public void updatePellet() {
+        int tempX, tempY;
+        int lastPelletX, lastPelletY;
+        int pelletX, pelletY;
+
         tempX = x / gridSize - 1;
         tempY = y / gridSize - 1;
         if (tempX != pelletX || tempY != pelletY) {
