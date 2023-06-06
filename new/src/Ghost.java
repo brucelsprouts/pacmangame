@@ -13,4 +13,44 @@ public class Ghost extends Mover {
     public Ghost(int x, int y) {
 
     }
+
+    public void move() {
+        lastX = x;
+        lastY = y;
+    
+        if () {
+          direction = newDirection();
+        }
+    
+        switch (direction) {
+        case 'L':
+          if (isValidDest(x - increment, y)) x -= increment;
+          break;
+        case 'R':
+          if (isValidDest(x + gridSize, y)) x += increment;
+          break;
+        case 'U':
+          if (isValidDest(x, y - increment)) y -= increment;
+          break;
+        case 'D':
+          if (isValidDest(x, y + gridSize)) y += increment;
+          break;
+        }
+      }
+
+      public void updatePellet() {
+        int tempX,
+        tempY;
+        tempX = x / gridSize - 1;
+        tempY = y / gridSize - 1;
+        if (tempX != pelletX || tempY != pelletY) {
+          lastPelletX = pelletX;
+          lastPelletY = pelletY;
+          pelletX = tempX;
+          pelletY = tempY;
+        }
+    
+      }
+
+
 }
