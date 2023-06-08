@@ -43,7 +43,7 @@ public class testfile extends JPanel implements KeyListener {
         {true, false, false, false, false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, true},
         {true, false, false, false, false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, true},
         {true, false, false, false, false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, true},
-        {true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true},
+        {true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true}
     };
 
     public testfile() {
@@ -55,7 +55,6 @@ public class testfile extends JPanel implements KeyListener {
         addKeyListener(this);
 
         // Set up the walls
-        walls[0][0] = true;
         
         
 
@@ -149,7 +148,6 @@ public class testfile extends JPanel implements KeyListener {
         pacmanDirection = newDirection;
     }
 
-    @Override
     public void keyPressed(KeyEvent e) {
         int keyCode = e.getKeyCode();
 
@@ -169,16 +167,6 @@ public class testfile extends JPanel implements KeyListener {
         }
     }
 
-    @Override
-    public void keyReleased(KeyEvent e) {
-        // Handle key released event if needed
-    }
-
-    @Override
-    public void keyTyped(KeyEvent e) {
-        // Handle key typed event if needed
-    }
-
     public static void main(String[] args) {
         JFrame frame = new JFrame("Pacman Game");
         testfile game = new testfile();
@@ -186,5 +174,13 @@ public class testfile extends JPanel implements KeyListener {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
+    }
+
+    public void keyReleased(KeyEvent e) {
+        
+    }
+
+    public void keyTyped(KeyEvent e) {
+        
     }
 }
