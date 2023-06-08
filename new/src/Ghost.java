@@ -18,10 +18,6 @@ public class Ghost extends Mover {
         lastX = x;
         lastY = y;
     
-        if () {
-          direction = newDirection();
-        }
-    
         switch (direction) {
         case 'L':
           if (isValidDest(x - increment, y)) x -= increment;
