@@ -6,14 +6,15 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public class TestFile extends JPanel implements KeyListener {
-    private static final int WIDTH = 600;
-    private static final int HEIGHT = 600;
+    private static final int WIDTH = 560;
+    private static final int HEIGHT = 700;
     private static final int GRID_SIZE = 20;
     private static final int PACMAN_RADIUS = 10;
 
-    private int pacmanX = 200;
-    private int pacmanY = 300;
+    private int pacmanX = 280;
+    private int pacmanY = 480;
     private int pacmanDirection = 0; // 0 - right, 1 - down, 2 - left, 3 - up
+    private int score = 0;
 
     private int[][] mapObjects = {
     {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,},
@@ -43,6 +44,10 @@ public class TestFile extends JPanel implements KeyListener {
     {1, 1, 1, 2, 1, 1, 2, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 2, 1, 1, 2, 1, 1, 1,},
     {1, 1, 1, 2, 1, 1, 2, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 2, 1, 1, 2, 1, 1, 1,},
     {1, 2, 2, 2, 2, 2, 2, 1, 1, 2, 2, 2, 2, 1, 1, 2, 2, 2, 2, 1, 1, 2, 2, 2, 2, 2, 2, 1,},
+    {1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1,},
+    {1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1,},
+    {1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1,},
+    {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,}
 };
 
 
@@ -78,7 +83,7 @@ public class TestFile extends JPanel implements KeyListener {
                 repaint();
             
                 try {
-                    Thread.sleep(100); // Adjust the game speed by changing the sleep duration
+                    Thread.sleep(200); // Adjust the game speed by changing the sleep duration
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -108,6 +113,16 @@ public class TestFile extends JPanel implements KeyListener {
                 break;
         }
 
+        System.out.println(pacmanX/GRID_SIZE);
+        System.out.println(pacmanY/GRID_SIZE);
+        
+        if ((pacmanY/GRID_SIZE) == 14 && (pacmanX/GRID_SIZE) == 26) {
+            pacmanX = 1*GRID_SIZE;
+        }
+        if ((pacmanY/GRID_SIZE) == 14 && (pacmanX/GRID_SIZE) == 0) {
+            pacmanX = 25*GRID_SIZE;
+        }
+
         // Check if the next position is within the boundaries
         if (nextX >= 0 && nextX < WIDTH && nextY >= 0 && nextY < HEIGHT) {
             // Check if the next position is a wall
@@ -117,6 +132,11 @@ public class TestFile extends JPanel implements KeyListener {
             if (mapObjects[gridY][gridX] == 0 || mapObjects[gridY][gridX] == 2) { // fixed the indexing here
                 pacmanX = nextX;
                 pacmanY = nextY;
+
+                if(mapObjects[gridY][gridX] == 2) {
+                    mapObjects[gridY][gridX] = 0;
+                    score = score + 10;
+                }
             }
         }
     }
@@ -167,7 +187,7 @@ public class TestFile extends JPanel implements KeyListener {
         for (int x = 0; x < mapObjects.length; x++) {
             for (int y = 0; y < mapObjects[x].length; y++) {
                 if (mapObjects[x][y] == 3) { // fixed the indexing here
-                    g.fillRect((y * GRID_SIZE)+8, x * GRID_SIZE, GRID_SIZE, GRID_SIZE/8); // fixed the order of x and y
+                    g.fillRect((y * GRID_SIZE), x * GRID_SIZE, GRID_SIZE, GRID_SIZE/8); // fixed the order of x and y
                 }
             }
         }
