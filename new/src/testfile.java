@@ -15,37 +15,15 @@ public class TestFile extends JPanel implements KeyListener {
     private int pacmanY = 300;
     private int pacmanDirection = 0; // 0 - right, 1 - down, 2 - left, 3 - up
 
-    private boolean[][] walls = { {true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true},
-        {true, false, false, false, false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, true},
-        {true, false, false, false, false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, true},
-        {true, false, false, false, false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, true},
-        {true, false, false, false, false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, true},
-        {true, false, false, false, false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, true},
-        {true, false, false, false, false, false, false, true, false, false, false, false, false, false,false, false, false, false, false, false, true},
-        {true, false, false, false, false, false, false, true, false, false, false, false, false, false,false, false, false, false, false, false, true},
-        {true, false, false, false, false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, true},
-        {true, false, false, false, false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, true},
-        {true, false, false, false, false, false, false, true, false, false, false, false, false, false,false, false, false, false, false, false, true},
-        {true, false, false, false, false, false, false, true, false, false, false, false, false, false,false, false, false, false, false, false, true},
-        {true, false, false, false, false, false, false, true, false, false, false, false, false, false,false, false, false, false, false, false, true},
-        {true, false, false, false, false, false, false, true, false, false, false, false, false, false,false, false, false, false, false, false, true},
-        {true, false, false, false, false, false, false, true, false, false, false, false, false, false,false, false, false, false, false, false, true},
-        {true, false, false, false, false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, true},
-        {true, false, false, false, false, false, false, true, false, false, false, false, false, false,false, false, false, false, false, false, true},
-        {true, false, false, false, false, false, false, true, false, false, false, false, false, false,false, false, false, false, false, false, true},
-        {true, false, false, false, false, false, false, true, false, false, false, false, false, false,false, false, false, false, false, false, true},
-        {true, false, false, false, false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, true},
-        {true, false, false, false, false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, true},
-        {true, false, false, false, false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, true},
-        {true, false, false, false, false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, true},
-        {true, false, false, false, false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, true},
-        {true, false, false, false, false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, true},
-        {true, false, false, false, false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, true},
-        {true, false, false, false, false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, true},
-        {true, false, false, false, false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, true},
-        {true, false, false, false, false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, true},
-        {true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true}
-    };
+    private int[][] mapObjects = {
+    {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,},
+    {1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1,},
+    {1, 2, 1, 1, 1, 2, 1, 1, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1, 1, 1, 2, 1, 1, 1, 2, 1,},
+    {1, 2, 1, 1, 1, 2, 1, 1, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1, 1, 1, 2, 1, 1, 1, 2, 1,},
+    {1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1,},
+    {1, 2, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1, 2, 1,}  
+};
+
 
     private Image pacmanImage;
     private Image pacmanUpImage;
@@ -115,7 +93,7 @@ public class TestFile extends JPanel implements KeyListener {
             int gridX = nextX / GRID_SIZE;
             int gridY = nextY / GRID_SIZE;
 
-            if (!walls[gridY][gridX]) { // fixed the indexing here
+            if (mapObjects[gridY][gridX] == 0 || mapObjects[gridY][gridX] == 2) { // fixed the indexing here
                 pacmanX = nextX;
                 pacmanY = nextY;
             }
@@ -144,12 +122,22 @@ public class TestFile extends JPanel implements KeyListener {
 
         g.drawImage(currentImage, pacmanX, pacmanY, PACMAN_RADIUS * 2, PACMAN_RADIUS * 2, this);
 
-        // Draw Maze (walls)
+        // Draw Maze (mapObjects)
         g.setColor(Color.BLUE);
-        for (int x = 0; x < walls.length; x++) {
-            for (int y = 0; y < walls[x].length; y++) {
-                if (walls[x][y]) { // fixed the indexing here
+        for (int x = 0; x < mapObjects.length; x++) {
+            for (int y = 0; y < mapObjects[x].length; y++) {
+                if (mapObjects[x][y] == 1) { // fixed the indexing here
                     g.fillRect(y * GRID_SIZE, x * GRID_SIZE, GRID_SIZE, GRID_SIZE); // fixed the order of x and y
+                }
+            }
+        }
+
+        // Draw Objects (mapObjects)
+        g.setColor(Color.YELLOW);
+        for (int x = 0; x < mapObjects.length; x++) {
+            for (int y = 0; y < mapObjects[x].length; y++) {
+                if (mapObjects[x][y] == 2) { // fixed the indexing here
+                    g.fillOval((y * GRID_SIZE)+8, (x * GRID_SIZE)+8, GRID_SIZE/4, GRID_SIZE/4); // fixed the order of x and y
                 }
             }
         }
