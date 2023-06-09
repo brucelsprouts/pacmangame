@@ -15,7 +15,8 @@ public class TestFile extends JPanel implements KeyListener {
     private int pacmanY = 300;
     private int pacmanDirection = 0; // 0 - right, 1 - down, 2 - left, 3 - up
 
-    private boolean[][] walls = { {true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true},
+    private boolean[][] walls = { 
+        {true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true},
         {true, false, false, false, false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, true},
         {true, false, false, false, false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, true},
         {true, false, false, false, false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, true},
@@ -44,7 +45,7 @@ public class TestFile extends JPanel implements KeyListener {
         {true, false, false, false, false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, true},
         {true, false, false, false, false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, true},
         {true, false, false, false, false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, true},
-        {true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true}
+        {true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true}
     };
 
     private Image pacmanImage;
