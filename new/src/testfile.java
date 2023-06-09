@@ -74,10 +74,10 @@ public class TestFile extends JPanel implements KeyListener {
 
         // Start the game loop
         Thread gameLoop = new Thread(() -> {
-            while (true) {
+                while (true) {
                 updateGame();
                 repaint();
-
+            
                 try {
                     Thread.sleep(100); // Adjust the game speed by changing the sleep duration
                 } catch (InterruptedException e) {
@@ -89,7 +89,7 @@ public class TestFile extends JPanel implements KeyListener {
         gameLoop.start();
     }
 
-    private void updateGame() {
+    public void updateGame() {
         // Calculate the next position based on the current direction
         int nextX = pacmanX;
         int nextY = pacmanY;
