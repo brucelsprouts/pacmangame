@@ -1,9 +1,11 @@
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.IOException;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
-public class testfile extends JPanel implements KeyListener {
+public class TestFile extends JPanel implements KeyListener {
     private static final int WIDTH = 600;
     private static final int HEIGHT = 600;
     private static final int GRID_SIZE = 20;
@@ -13,8 +15,7 @@ public class testfile extends JPanel implements KeyListener {
     private int pacmanY = 300;
     private int pacmanDirection = 0; // 0 - right, 1 - down, 2 - left, 3 - up
 
-    private boolean[][] walls = {
-        {true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true},
+    private boolean[][] walls = { {true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true},
         {true, false, false, false, false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, true},
         {true, false, false, false, false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, true},
         {true, false, false, false, false, false, false, false, false, false, false, false, false, false,false, false, false, false, false, false, true},
@@ -46,7 +47,13 @@ public class testfile extends JPanel implements KeyListener {
         {true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true}
     };
 
-    public testfile() {
+    private Image pacmanImage;
+    private Image pacmanUpImage;
+    private Image pacmanDownImage;
+    private Image pacmanLeftImage;
+    private Image pacmanRightImage;
+
+    public TestFile() {
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
         setBackground(Color.BLACK);
 
@@ -54,9 +61,16 @@ public class testfile extends JPanel implements KeyListener {
         setFocusable(true);
         addKeyListener(this);
 
-        // Set up the walls
-        
-        
+        // Load the Pacman images
+        try {
+            pacmanImage = ImageIO.read(getClass().getResource("img/pacman.jpg"));
+            pacmanUpImage = ImageIO.read(getClass().getResource("img/pacmanup.jpg"));
+            pacmanDownImage = ImageIO.read(getClass().getResource("img/pacmandown.jpg"));
+            pacmanLeftImage = ImageIO.read(getClass().getResource("img/pacmanleft.jpg"));
+            pacmanRightImage = ImageIO.read(getClass().getResource("img/pacmanright.jpg"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         // Start the game loop
         Thread gameLoop = new Thread(() -> {
@@ -101,7 +115,7 @@ public class testfile extends JPanel implements KeyListener {
             int gridX = nextX / GRID_SIZE;
             int gridY = nextY / GRID_SIZE;
 
-            if (!walls[gridX][gridY]) {
+            if (!walls[gridY][gridX]) { // fixed the indexing here
                 pacmanX = nextX;
                 pacmanY = nextY;
             }
@@ -111,37 +125,36 @@ public class testfile extends JPanel implements KeyListener {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        // Draw Pacman
-        g.setColor(Color.YELLOW);
-        g.fillArc(pacmanX, pacmanY, PACMAN_RADIUS * 2, PACMAN_RADIUS * 2, getMouthAngle(), 360 - getMouthAngle() * 2);
+        // Draw Pacman based on the current direction
+        Image currentImage = pacmanImage;
+        switch (pacmanDirection) {
+            case 0:
+                currentImage = pacmanRightImage;
+                break;
+            case 1:
+                currentImage = pacmanDownImage;
+                break;
+            case 2:
+                currentImage = pacmanLeftImage;
+                break;
+            case 3:
+                currentImage = pacmanUpImage;
+                break;
+        }
+
+        g.drawImage(currentImage, pacmanX, pacmanY, PACMAN_RADIUS * 2, PACMAN_RADIUS * 2, this);
 
         // Draw Maze (walls)
         g.setColor(Color.BLUE);
         for (int x = 0; x < walls.length; x++) {
-            for (int y = 0; y < walls[0].length; y++) {
-                if (walls[x][y]) {
-                    g.fillRect(x * GRID_SIZE, y * GRID_SIZE, GRID_SIZE, GRID_SIZE);
+            for (int y = 0; y < walls[x].length; y++) {
+                if (walls[x][y]) { // fixed the indexing here
+                    g.fillRect(y * GRID_SIZE, x * GRID_SIZE, GRID_SIZE, GRID_SIZE); // fixed the order of x and y
                 }
             }
         }
 
         // Add other game elements (dots, ghosts, etc.) if desired
-    }
-
-    private int getMouthAngle() {
-        // Calculate the mouth angle based on the current direction
-        switch (pacmanDirection) {
-            case 0:
-                return 45;
-            case 1:
-                return 135;
-            case 2:
-                return 225;
-            case 3:
-                return 315;
-            default:
-                return 0;
-        }
     }
 
     private void changeDirection(int newDirection) {
@@ -167,20 +180,20 @@ public class testfile extends JPanel implements KeyListener {
         }
     }
 
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("Pacman Game");
-        testfile game = new testfile();
-        frame.getContentPane().add(game);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.pack();
-        frame.setVisible(true);
-    }
-
     public void keyReleased(KeyEvent e) {
-        
+
     }
 
     public void keyTyped(KeyEvent e) {
-        
+
+    }
+
+    public static void main(String[] args) {
+        JFrame frame = new JFrame("Pacman Game");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setResizable(false);
+        frame.getContentPane().add(new TestFile());
+        frame.pack();
+        frame.setVisible(true);
     }
 }
