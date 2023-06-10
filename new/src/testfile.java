@@ -7,7 +7,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
-public class TestFile extends JPanel implements KeyListener, MouseListener{
+public class TestFile extends JPanel implements KeyListener, MouseListener {
     private static final int WIDTH = 560;
     private static final int HEIGHT = 700;
     private static final int GRID_SIZE = 20;
@@ -180,6 +180,23 @@ public class TestFile extends JPanel implements KeyListener, MouseListener{
             // Update the high score if the current score is higher
             if (score > highScore) {
                 highScore = score;
+            }
+        
+            // Check if the current position contains a pellet (represented by value 2 in mapObjects)
+            if (mapObjects[pacmanY / GRID_SIZE][pacmanX / GRID_SIZE] == 2) {
+                score++; // Increase the score
+                mapObjects[pacmanY / GRID_SIZE][pacmanX / GRID_SIZE] = 0; // Remove the pellet from the map
+        
+                // Update the high score if the current score is higher
+                if (score > highScore) {
+                    highScore = score;
+                }
+            }
+        
+
+            // Check if the "Exit" text was clicked
+            if (exitClicked) {
+            System.exit(0);
             }
         }
     }
