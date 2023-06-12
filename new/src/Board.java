@@ -2,6 +2,7 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -34,7 +35,7 @@ public class Board extends JPanel /*implements KeyListener, MouseListener*/ {
     static ArrayList<Ghost> gList = new ArrayList<>();
 
     //0 = empty space, 1 = wall, 2 = pellet, 3 = ghost gate
-    static int[][] mapObjects = {
+    static int[][] mapData = {
         {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,},
         {1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1,},
         {1, 2, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 2, 1,},
@@ -68,7 +69,16 @@ public class Board extends JPanel /*implements KeyListener, MouseListener*/ {
         {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,}
     };
 
+    static int[][] mapObjects = new int[mapData.length][mapData[0].length];
+
     public Board() {
+        
+        for (int i = 0; i < mapData.length; i++) {
+            for (int j = 0; j < mapData[i].length; j++) {
+                mapObjects[i][j] = mapData[i][j];
+            }
+        }
+
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
         setBackground(Color.BLACK);
         highScore = 0;

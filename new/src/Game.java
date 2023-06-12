@@ -5,6 +5,7 @@ public class Game extends JFrame implements Runnable {
 
     static int pacmanLives = 3;
     static int score = 0;
+    static int counter = 0;
 
     public Game() {
         setTitle("Pacman");
@@ -27,6 +28,18 @@ public class Game extends JFrame implements Runnable {
                     board = new Board();
                     Pacman.pacmanX = 260;
                     Pacman.pacmanY = 460;
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (counter >= 244 && counter % 244 == 0) {
+                try {
+                    Thread.sleep(3000);
+                    Board.gList.clear();
+                    board = new Board();
+                    Pacman.pacmanX = 260;
+                    Pacman.pacmanY = 460;
+                    counter = 0;
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

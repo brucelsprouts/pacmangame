@@ -64,6 +64,7 @@ public class Pacman {
         // Check if the current position contains a pellet (represented by value 2 in mapObjects)
         if (Board.mapObjects[pacmanY / Board.GRID_SIZE][pacmanX / Board.GRID_SIZE] == 2) {
             Game.score++; // Increase the score
+            Game.counter++;
             Board.mapObjects[pacmanY / Board.GRID_SIZE][pacmanX / Board.GRID_SIZE] = 0; // Remove the pellet from the map
         
             // Update the high score if the current score is higher

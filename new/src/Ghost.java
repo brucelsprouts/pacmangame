@@ -7,6 +7,7 @@ public class Ghost {
   private int ghostY; // y position
   private Image ghostLeft;
   private Image ghostRight;
+  private boolean ghostMove;
 
   public Ghost(Image leftImage, Image rightImage, int x, int y) {
     this.ghostX = x;
@@ -52,6 +53,9 @@ public class Ghost {
         && (Board.mapObjects[nextY / Board.GRID_SIZE][nextX / Board.GRID_SIZE] != 3)) {
       this.ghostX = nextX;
       this.ghostY = nextY;
+      this.ghostMove = true;
+    } else {
+      this.ghostMove = false;
     }
   }
 
@@ -151,8 +155,11 @@ public class Ghost {
       ghostStart();
       count++;
     } else {
-      changeGhostDirection(noBackwardGhostDirection());
-      validGhostMove();
+      this.ghostMove = false;
+      while (this.ghostMove != true) {
+        changeGhostDirection(noBackwardGhostDirection());
+        validGhostMove();
+      }
       teleportGhost();
     }
   }
