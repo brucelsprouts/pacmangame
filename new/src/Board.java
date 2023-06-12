@@ -2,7 +2,6 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -12,8 +11,11 @@ public class Board extends JPanel /*implements KeyListener, MouseListener*/ {
     static final int HEIGHT = 700;
     static final int GRID_SIZE = 20;
     static final int PACMAN_RADIUS = 10;
-    static int highScore = 0; // High score counter
     static boolean exitClicked = false;
+    static boolean menu = true;
+
+    //
+    private Image menuImage;
 
     //pacman images
     private Image pacmanImage;
@@ -72,37 +74,31 @@ public class Board extends JPanel /*implements KeyListener, MouseListener*/ {
     static int[][] mapObjects = new int[mapData.length][mapData[0].length];
 
     public Board() {
-        
-        for (int i = 0; i < mapData.length; i++) {
-            for (int j = 0; j < mapData[i].length; j++) {
-                mapObjects[i][j] = mapData[i][j];
-            }
-        }
-
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
         setBackground(Color.BLACK);
-        highScore = 0;
         // Add key listener
         setFocusable(true);
         addKeyListener(new Controller());
         addMouseListener(new Controller());
 
-        // Load the Pacman and Ghost images
+        // Load the Menu, Pacman and Ghost images
         try {
-            pacmanImage = ImageIO.read(getClass().getResource("img/pacman.jpg"));
-            pacmanUpImage = ImageIO.read(getClass().getResource("img/pacmanup.jpg"));
-            pacmanDownImage = ImageIO.read(getClass().getResource("img/pacmandown.jpg"));
-            pacmanLeftImage = ImageIO.read(getClass().getResource("img/pacmanleft.jpg"));
-            pacmanRightImage = ImageIO.read(getClass().getResource("img/pacmanright.jpg"));
+            menuImage = ImageIO.read(new File("img/titlescreen.jpg"));
+
+            pacmanImage = ImageIO.read(new File("img/pacman.jpg"));
+            pacmanUpImage = ImageIO.read(new File("img/pacmanup.jpg"));
+            pacmanDownImage = ImageIO.read(new File("img/pacmandown.jpg"));
+            pacmanLeftImage = ImageIO.read(new File("img/pacmanleft.jpg"));
+            pacmanRightImage = ImageIO.read(new File("img/pacmanright.jpg"));
 
             redLeft = ImageIO.read(new File("img/RedLeft.jpg"));
             redRight = ImageIO.read(new File("img/RedRight.jpg"));
-            blueLeft = ImageIO.read(getClass().getResource("img/BlueLeft.jpg"));
-            blueRight = ImageIO.read(getClass().getResource("img/BlueRight.jpg"));
-            orangeLeft = ImageIO.read(getClass().getResource("img/OrangeLeft.jpg"));
-            orangeRight = ImageIO.read(getClass().getResource("img/OrangeRight.jpg"));
-            pinkLeft = ImageIO.read(getClass().getResource("img/PinkLeft.jpg"));
-            pinkRight = ImageIO.read(getClass().getResource("img/PinkRight.jpg"));
+            blueLeft = ImageIO.read(new File("img/BlueLeft.jpg"));
+            blueRight = ImageIO.read(new File("img/BlueRight.jpg"));
+            orangeLeft = ImageIO.read(new File("img/OrangeLeft.jpg"));
+            orangeRight = ImageIO.read(new File("img/OrangeRight.jpg"));
+            pinkLeft = ImageIO.read(new File("img/PinkLeft.jpg"));
+            pinkRight = ImageIO.read(new File("img/PinkRight.jpg"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -141,6 +137,12 @@ public class Board extends JPanel /*implements KeyListener, MouseListener*/ {
 
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+
+        if (menu) {
+        //Draw Menu
+        g.drawImage(menuImage, 0, 0, WIDTH, HEIGHT, this);
+        } else {
+
 
         // Draw Pacman based on the current direction
         Image pacImage = pacmanImage;
@@ -222,5 +224,6 @@ public class Board extends JPanel /*implements KeyListener, MouseListener*/ {
         g.setFont(new Font("Arial", Font.BOLD, 20));
         g.drawString("Exit", WIDTH - 70, HEIGHT - 20);
     }
+}
     //---------------------------------PAINT STUFF ENDS-----------------------------------//
 }

@@ -66,11 +66,6 @@ public class Pacman {
             Game.score++; // Increase the score
             Game.counter++;
             Board.mapObjects[pacmanY / Board.GRID_SIZE][pacmanX / Board.GRID_SIZE] = 0; // Remove the pellet from the map
-        
-            // Update the high score if the current score is higher
-            if (Game.score > Board.highScore) {
-                Board.highScore = Game.score;
-            }
         }
     }
 

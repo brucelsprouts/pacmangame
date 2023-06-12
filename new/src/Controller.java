@@ -21,6 +21,10 @@ public class Controller implements KeyListener, MouseListener {
             case KeyEvent.VK_UP:
                 Pacman.changePacmanDirection(3);
                 break;
+            case KeyEvent.VK_SPACE:
+                if (Board.menu) {
+                    Board.menu = false;
+                }
         }
     }
 
