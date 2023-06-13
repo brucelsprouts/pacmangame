@@ -6,9 +6,9 @@ import java.awt.event.MouseListener;
 public class Controller implements KeyListener, MouseListener {
     
     public void keyPressed(KeyEvent e) {
-        int key = e.getKeyCode();
+        int input = e.getKeyCode();
 
-        switch (key) {
+        switch (input) {
             case KeyEvent.VK_RIGHT:
                 Pacman.changePacmanDirection(0);
                 break;

@@ -12,8 +12,10 @@ public class Game extends JFrame implements Runnable {
 
     static int pacmanLives = 3;
     static int score = 0;
+    static int finalScore = 0;
     static int counter = 0;
     static int highScore = 0;
+    private int count = 0;
 
     public Game() {
         setTitle("Pacman");
@@ -35,6 +37,13 @@ public class Game extends JFrame implements Runnable {
         while (true) {
             while (Board.menu) {
                 repaint();
+            }
+            if (pacmanLives <= 0) {
+                Board.gameOver = true;
+                if (count == 0) {
+                    finalScore = score;
+                    count++;
+                }
             }
             Board.updateGame();
             repaint();
@@ -90,7 +99,7 @@ public class Game extends JFrame implements Runnable {
             Ghost aGhost = Board.gList.get(i);
             if ((Pacman.pacmanX == aGhost.getGhostX() && Pacman.pacmanY == aGhost.getGhostY()) || 
                     (Pacman.prevX == aGhost.getGhostX() && Pacman.prevY == aGhost.getGhostY())) {
-                Game.pacmanLives--;
+                pacmanLives--;
                 return true;
             }
         }

@@ -13,9 +13,11 @@ public class Board extends JPanel /*implements KeyListener, MouseListener*/ {
     static final int PACMAN_RADIUS = 10;
     static boolean exitClicked = false;
     static boolean menu = true;
+    static boolean gameOver = false;
 
-    //
+    //Menu and GameOver Image
     private Image menuImage;
+    private Image gameOverImage;
 
     //pacman images
     private Image pacmanImage;
@@ -84,6 +86,7 @@ public class Board extends JPanel /*implements KeyListener, MouseListener*/ {
         // Load the Menu, Pacman and Ghost images
         try {
             menuImage = ImageIO.read(new File("img/titlescreen.jpg"));
+            gameOverImage = ImageIO.read(new File("img/gameover.jpg"));
 
             pacmanImage = ImageIO.read(new File("img/pacman.jpg"));
             pacmanUpImage = ImageIO.read(new File("img/pacmanup.jpg"));
@@ -139,91 +142,110 @@ public class Board extends JPanel /*implements KeyListener, MouseListener*/ {
         super.paintComponent(g);
 
         if (menu) {
-        //Draw Menu
-        g.drawImage(menuImage, 0, 0, WIDTH, HEIGHT, this);
+            // Draw Menu
+            g.drawImage(menuImage, 0, 0, WIDTH, HEIGHT, this);
+        } else if (gameOver) {
+            g.drawImage(gameOverImage, 0, 0, WIDTH, HEIGHT - 20, this);
+
+            // Draw the high score counter
+            g.setColor(Color.YELLOW);
+            g.setFont(new Font("Arial", Font.BOLD, 20));
+            g.drawString("Score: " + Game.finalScore, 10, HEIGHT - 20);
+
+            // Draw the "Exit" text at the bottom right
+            g.setColor(Color.YELLOW);
+            g.setFont(new Font("Arial", Font.BOLD, 20));
+            g.drawString("Exit", WIDTH - 70, HEIGHT - 20);
+
         } else {
 
-
-        // Draw Pacman based on the current direction
-        Image pacImage = pacmanImage;
-        switch (Pacman.pacmanDirection) {
-            case 0:
-                pacImage = pacmanRightImage;
-                break;
-            case 1:
-                pacImage = pacmanDownImage;
-                break;
-            case 2:
-                pacImage = pacmanLeftImage;
-                break;
-            case 3:
-                pacImage = pacmanUpImage;
-                break;
-            case 4:
-                pacImage = pacmanImage;
-        }
-
-        g.drawImage(pacImage, Pacman.pacmanX, Pacman.pacmanY, PACMAN_RADIUS * 2, PACMAN_RADIUS * 2, this);
-
-        
-        // Draw Ghost based on the current direction for all 4 ghosts
-        for (int i = 0; i < gList.size(); i++) {
-            Ghost aGhost = gList.get(i);
-
-            Image ghostImage = aGhost.getGhostLeft();
-            switch (aGhost.getGhostDirection()) {
+            // Draw Pacman based on the current direction
+            Image pacImage = pacmanImage;
+            switch (Pacman.pacmanDirection) {
                 case 0:
-                    ghostImage = aGhost.getGhostLeft();
+                    pacImage = pacmanRightImage;
                     break;
                 case 1:
-                    ghostImage = aGhost.getGhostRight();
-                break;
+                    pacImage = pacmanDownImage;
+                    break;
+                case 2:
+                    pacImage = pacmanLeftImage;
+                    break;
+                case 3:
+                    pacImage = pacmanUpImage;
+                    break;
+                case 4:
+                    pacImage = pacmanImage;
             }
 
-            g.drawImage(ghostImage, aGhost.getGhostX(), aGhost.getGhostY(), PACMAN_RADIUS * 2, PACMAN_RADIUS * 2, this); 
-        }
-        
+            g.drawImage(pacImage, Pacman.pacmanX, Pacman.pacmanY, PACMAN_RADIUS * 2, PACMAN_RADIUS * 2, this);
 
-        // Draw Maze (mapObjects)
-        g.setColor(Color.BLUE);
-        for (int x = 0; x < mapObjects.length; x++) {
-            for (int y = 0; y < mapObjects[x].length; y++) {
-                if (mapObjects[x][y] == 1) {
-                    g.fillRect(y * GRID_SIZE, x * GRID_SIZE, GRID_SIZE, GRID_SIZE);
+            // Draw Ghost based on the current direction for all 4 ghosts
+            for (int i = 0; i < gList.size(); i++) {
+                Ghost aGhost = gList.get(i);
+
+                Image ghostImage = aGhost.getGhostLeft();
+                switch (aGhost.getGhostDirection()) {
+                    case 0:
+                        ghostImage = aGhost.getGhostLeft();
+                        break;
+                    case 1:
+                        ghostImage = aGhost.getGhostRight();
+                        break;
+                }
+
+                g.drawImage(ghostImage, aGhost.getGhostX(), aGhost.getGhostY(), PACMAN_RADIUS * 2, PACMAN_RADIUS * 2,
+                        this);
+            }
+
+            // Draw Maze (mapObjects)
+            g.setColor(Color.BLUE);
+            for (int x = 0; x < mapObjects.length; x++) {
+                for (int y = 0; y < mapObjects[x].length; y++) {
+                    if (mapObjects[x][y] == 1) {
+                        g.fillRect(y * GRID_SIZE, x * GRID_SIZE, GRID_SIZE, GRID_SIZE);
+                    }
                 }
             }
-        }
 
-        // Draw Objects (mapObjects)
-        g.setColor(Color.YELLOW);
-        for (int x = 0; x < mapObjects.length; x++) {
-            for (int y = 0; y < mapObjects[x].length; y++) {
-                if (mapObjects[x][y] == 2) {
-                    g.fillOval((y * GRID_SIZE) + 8, (x * GRID_SIZE) + 8, GRID_SIZE / 4, GRID_SIZE / 4);
+            // Draw Objects (mapObjects)
+            g.setColor(Color.YELLOW);
+            for (int x = 0; x < mapObjects.length; x++) {
+                for (int y = 0; y < mapObjects[x].length; y++) {
+                    if (mapObjects[x][y] == 2) {
+                        g.fillOval((y * GRID_SIZE) + 8, (x * GRID_SIZE) + 8, GRID_SIZE / 4, GRID_SIZE / 4);
+                    }
                 }
             }
-        }
 
-        // Draw Ghost Gate (mapObjects)
-        g.setColor(Color.PINK);
-        for (int x = 0; x < mapObjects.length; x++) {
-            for (int y = 0; y < mapObjects[x].length; y++) {
-                if (mapObjects[x][y] == 3) {
-                    g.fillRect(y * GRID_SIZE, x * GRID_SIZE, GRID_SIZE, GRID_SIZE/10);
+            // Draw Ghost Gate (mapObjects)
+            g.setColor(Color.PINK);
+            for (int x = 0; x < mapObjects.length; x++) {
+                for (int y = 0; y < mapObjects[x].length; y++) {
+                    if (mapObjects[x][y] == 3) {
+                        g.fillRect(y * GRID_SIZE, x * GRID_SIZE, GRID_SIZE, GRID_SIZE / 10);
+                    }
                 }
             }
+
+            // Draw Pacmna Lives
+            g.setColor(Color.YELLOW);
+            g.setFont(new Font("Arial", Font.BOLD, 20));
+            g.drawString("Lives: " , 10, HEIGHT - 50);
+            for (int i = 1; i < Game.pacmanLives; i++) {
+                g.drawImage(pacmanRightImage, i*30+50, HEIGHT - 70, this);
+            }
+
+            // Draw the high score counter
+            g.setColor(Color.YELLOW);
+            g.setFont(new Font("Arial", Font.BOLD, 20));
+            g.drawString("Score: " + Game.score, 10, HEIGHT - 20);
+
+            // Draw the "Exit" text at the bottom right
+            g.setColor(Color.YELLOW);
+            g.setFont(new Font("Arial", Font.BOLD, 20));
+            g.drawString("Exit", WIDTH - 70, HEIGHT - 20);
         }
-
-        // Draw the high score counter
-        g.setColor(Color.YELLOW);
-        g.setFont(new Font("Arial", Font.BOLD, 20));
-        g.drawString("Score: " + Game.score, 10, HEIGHT - 20);
-
-        // Draw the "Exit" text at the bottom right
-        g.setColor(Color.YELLOW);
-        g.setFont(new Font("Arial", Font.BOLD, 20));
-        g.drawString("Exit", WIDTH - 70, HEIGHT - 20);
     }
-}
-    //---------------------------------PAINT STUFF ENDS-----------------------------------//
+    // ---------------------------------PAINT STUFF ENDS-----------------------------------//
 }
