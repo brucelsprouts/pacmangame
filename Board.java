@@ -120,19 +120,21 @@ public class Board extends JPanel {
             e.printStackTrace();
         }
 
-        //Add the different ghosts to the array list
+        //Create all 4 ghosts objects
         Ghost redGhost = new Ghost(redLeft, redRight, 260, 300);
-        gList.add(redGhost);
         Ghost blueGhost = new Ghost(blueLeft, blueRight, 280, 300);
-        gList.add(blueGhost);
         Ghost orangeGhost = new Ghost(orangeLeft, orangeRight, 260, 280);
-        gList.add(orangeGhost);
         Ghost pinkGhost = new Ghost(pinkLeft, pinkRight, 280, 280);
+
+        //Add the different ghosts to the array list
+        gList.add(redGhost);
+        gList.add(blueGhost);
+        gList.add(orangeGhost);
         gList.add(pinkGhost);
 
-        //Create a pacman
+        //Create pacman
         Pacman pacman = new Pacman(pacmanLeftImage, pacmanRightImage, pacmanUpImage, pacmanDownImage, pacmanImage);
-    }//endo of Board
+    }//end of Board
 
     //Updates the game
     public static void updateGame() {
