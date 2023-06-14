@@ -21,7 +21,7 @@ public class Game extends JFrame implements Runnable {
     private Board board;
 
     static boolean restart = false;         //Determines if the game should restart
-    static int pacmanLives = 1;     //Determines how many lives pacman has
+    static int pacmanLives = 3;     //Determines how many lives pacman has
     static int score = 0;           //The score pacman has as he collects pellets
     static int finalScore = 0;      //The final score when pacman dies
     static int pelletCounter = 0;   //Counts pellets to determine if all on screen are collected
@@ -53,6 +53,32 @@ public class Game extends JFrame implements Runnable {
                 repaint();
             }//while
 
+            // If restart is pressed, restart the game
+            if (restart) {
+                // reset all variables
+                score = 0;
+                finalScore = 0;
+                count = 0;
+
+                // reset ghosts
+                Board.gList.clear();
+
+                // reset mapobjects
+                for (int i = 0; i < Board.mapData.length; i++) {
+                    for (int j = 0; j < Board.mapData[i].length; j++) {
+                        Board.mapObjects[i][j] = Board.mapData[i][j];
+                    } // for
+                } // for
+
+                // reset pacman position
+                Pacman.pacmanX = 260;
+                Pacman.pacmanY = 460;
+                board = new Board();
+                restart = false;
+                Board.gameOver = false;
+                Board.menu = true;
+            } // if
+
             //if pacman runs out of lives go to game over screen
             if (pacmanLives <= 0) {
                 Board.gameOver = true;
@@ -72,30 +98,6 @@ public class Game extends JFrame implements Runnable {
                     //set show leader board to false again
                     Board.showLeaderBoard = false;
                 }//if
-
-                if (restart) {
-                    score = 0;
-                    finalScore = 0;
-                    count = 0;
-                    pacmanLives = 1;
-
-                    //reset ghosts
-                    Board.gList.clear();
-
-                    //reset mapobjects
-                    for (int i = 0; i < Board.mapData.length; i++) {
-                        for (int j = 0; j < Board.mapData[i].length; j++) {
-                            Board.mapObjects[i][j] = Board.mapData[i][j];
-                        }//for
-                    }
-
-                    //reset pacman position
-                    Pacman.pacmanX = 260;
-                    Pacman.pacmanY = 460;
-                    board = new Board();
-                    restart = false;
-                    Board.gameOver = false;
-                }
             }//if
 
             //update and repaint board

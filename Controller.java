@@ -31,12 +31,25 @@ public class Controller implements KeyListener, MouseListener {
                 Pacman.changePacmanDirection(3);
                 break;
 
-            //check if the space bar is pressed
-            case KeyEvent.VK_SPACE: //Space bar
-                //if the menu is being shown, remove it
+            // check if 1 2 or 3 is pressed
+            case KeyEvent.VK_1: // Set Lives to 1
                 if (Board.menu) {
+                    Game.pacmanLives = 1;
                     Board.menu = false;
-                }//if
+                }
+                break;
+            case KeyEvent.VK_2: // Set Lives to 2
+                if (Board.menu) {
+                    Game.pacmanLives = 2;
+                    Board.menu = false;
+                }
+                break;
+            case KeyEvent.VK_3: // Set Lives to 3
+                if (Board.menu) {
+                    Game.pacmanLives = 3;
+                    Board.menu = false;
+                }
+                break;
         }//switch
     }//end of keyPressed
 
@@ -53,20 +66,21 @@ public class Controller implements KeyListener, MouseListener {
             Board.exitClicked = true;
         }//if
 
-        //When pacman has no lives allow a button to be clicked to show the leaderboard
+        if (mouseX >= Board.WIDTH - 100 && mouseX <= Board.WIDTH - 20 &&
+                mouseY >= Board.HEIGHT - 70 && mouseY <= Board.HEIGHT - 50) {
+            // if clicked on the "Restart" text set restart to true
+            Game.restart = true;
+        } // if
+
+        // When pacman has no lives allow a button to be clicked to show the leaderboard
         if (Game.pacmanLives <= 0) {
             if (mouseX >= Board.WIDTH - 370 && mouseX <= Board.WIDTH - 190 &&
                     mouseY >= Board.HEIGHT - 40 && mouseY <= Board.HEIGHT - 20) {
                 // if clicked on the "Show LeaderBoard" text set showLeaderBoard to true
                 Board.showLeaderBoard = true;
-            }//if
+            } // if
 
-            if (mouseX >= Board.WIDTH - 100 && mouseX <= Board.WIDTH - 20 &&
-                    mouseY >= Board.HEIGHT - 70 && mouseY <= Board.HEIGHT - 50) {
-                // if clicked on the "Restart" text set restart to true
-                Game.restart = true;
-            }//if
-        }//if
+        } // if
     }//end of mousePressed
 
     public void mouseClicked(MouseEvent e) { 

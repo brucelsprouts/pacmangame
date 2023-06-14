@@ -286,6 +286,11 @@ public class Board extends JPanel {
             g.setColor(Color.YELLOW);
             g.setFont(new Font("Arial", Font.BOLD, 20));
             g.drawString("Exit", WIDTH - 70, HEIGHT - 20);
+
+            // Draw the "Restart" text at the bottom right
+            g.setColor(Color.YELLOW);
+            g.setFont(new Font("Arial", Font.BOLD, 20));
+            g.drawString("Restart", WIDTH - 100, HEIGHT - 50);
         }
     }//end of paintComponent
     // ---------------------------------PAINT STUFF ENDS-----------------------------------//
