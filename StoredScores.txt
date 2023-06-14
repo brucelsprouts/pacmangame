@@ -1,13 +1,13 @@
 LeaderBoard:
+179
 155
 104
 90
+71
 65
 64
 51
 50
 46
-39
-36
 
-Newest Score: 90
+Newest Score: 179
