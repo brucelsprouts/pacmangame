@@ -126,7 +126,7 @@ public class Game extends JFrame implements Runnable {
             }//if
 
             try {
-                Thread.sleep(175); // Adjust the game speed by changing the sleep duration
+                Thread.sleep(150); // Adjust the game speed by changing the sleep duration
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }//try/catch
