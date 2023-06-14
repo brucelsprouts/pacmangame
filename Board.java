@@ -45,7 +45,7 @@ public class Board extends JPanel {
     private Image pinkRight;
 
     //arraylist to store information about the 4 ghosts
-    static ArrayList<Ghost> gList = new ArrayList<>();
+    static ArrayList<Ghost> gList = new ArrayList<Ghost>();
 
     //Shows information for every grid on the map
     //0 = empty space, 1 = wall, 2 = pellet, 3 = ghost gate

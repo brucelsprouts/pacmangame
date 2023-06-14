@@ -135,10 +135,11 @@ public class Game extends JFrame implements Runnable {
 
     //Used to updated the score files when the game ends
     private static void updateScoreFile() {
-        List<Integer> topScores = new ArrayList<>();
+        List<Integer> topScores = new ArrayList<Integer>();
 
         // Read scores from the text file
-        try (BufferedReader reader = new BufferedReader(new FileReader("StoredScores.txt"))) {
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader("StoredScores.txt"));
             String line;
             while ((line = reader.readLine()) != null) {
                 if (!line.isEmpty()) {
@@ -151,6 +152,7 @@ public class Game extends JFrame implements Runnable {
                     }//try/catch
                 }//if
             }//while
+            reader.close();
         } catch (IOException e) {
             System.err.println("Failed to read scores from the file: " + e.getMessage());
         }//try/catch
@@ -167,8 +169,9 @@ public class Game extends JFrame implements Runnable {
         }
 
         // Output the leaderboard to the text file
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("LeaderBoard.txt"));
-             BufferedWriter writer2 = new BufferedWriter(new FileWriter("StoredScores.txt"))) {
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter("LeaderBoard.txt"));
+            BufferedWriter writer2 = new BufferedWriter(new FileWriter("StoredScores.txt"));
             // Write the top scores
             writer.write("|-------------LeaderBoard-------------|\n");
             writer2.write("LeaderBoard:\n");
@@ -183,6 +186,8 @@ public class Game extends JFrame implements Runnable {
             // Write the newest score
             writer.write("\nNewest Score: " + finalScore);
             writer2.write("\nNewest Score: " + finalScore);
+            writer.close();
+            writer2.close();
         } catch (IOException e) {
             System.err.println("Failed to write to the file: " + e.getMessage());
         }//try/catch
