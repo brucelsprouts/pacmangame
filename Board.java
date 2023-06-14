@@ -21,6 +21,7 @@ public class Board extends JPanel {
     static boolean exitClicked = false;     //if exit button is clicked
     static boolean menu = true;             //if menu screen should be shown
     static boolean gameOver = false;        //if game over screen should be shown
+    static boolean showLeaderBoard = false; //if leaderboard should be shown
 
     //Menu and GameOver Image
     private Image menuImage;
@@ -185,6 +186,11 @@ public class Board extends JPanel {
             g.setFont(new Font("Arial", Font.BOLD, 20));
             g.drawString("Exit", WIDTH - 70, HEIGHT - 20);
 
+            // Draw the "Show LeaderBoard" text at the bottom
+            g.setColor(Color.YELLOW);
+            g.setFont(new Font("Arial", Font.BOLD, 20));
+            g.drawString("Show LeaderBoard", WIDTH - 370, HEIGHT - 20);
+
         //if menu and game over should not be drawn, drawn the actual game
         } else {
 
@@ -225,8 +231,7 @@ public class Board extends JPanel {
                 }//switch
 
                 //draw ghost using provided direction
-                g.drawImage(ghostImage, aGhost.getGhostX(), aGhost.getGhostY(), PACMAN_RADIUS * 2, PACMAN_RADIUS * 2,
-                        this);
+                g.drawImage(ghostImage, aGhost.getGhostX(), aGhost.getGhostY(), PACMAN_RADIUS * 2, PACMAN_RADIUS * 2, this);
             }//for
 
             // Draw Maze (mapObjects)

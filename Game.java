@@ -5,8 +5,10 @@
  *              game until the program is closed
  * */
 
+import java.awt.Desktop;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -18,7 +20,7 @@ import javax.swing.JFrame;
 public class Game extends JFrame implements Runnable {
     private Board board;
 
-    static int pacmanLives = 3;     //Determines how many lives pacman has
+    static int pacmanLives = 1;     //Determines how many lives pacman has
     static int score = 0;           //The score pacman has as he collects pellets
     static int finalScore = 0;      //The final score when pacman dies
     static int pelletCounter = 0;   //Counts pellets to determine if all on screen are collected
@@ -60,6 +62,14 @@ public class Game extends JFrame implements Runnable {
                     //update score in the files
                     updateScoreFile();
                     count++;
+                }//if
+
+                //when the show leader board button is pressed open the leader board file
+                if (Board.showLeaderBoard) {
+                    fileOpener();
+                    
+                    //set show leader board to false again
+                    Board.showLeaderBoard = false;
                 }//if
             }//if
 
@@ -177,6 +187,32 @@ public class Game extends JFrame implements Runnable {
             System.err.println("Failed to write to the file: " + e.getMessage());
         }//try/catch
     }//end of updateScoreFile
+
+    //opens text files
+    private void fileOpener() {
+        // open the text file
+        File file = new File("LeaderBoard.txt");
+
+        try {
+            // Check if Desktop is supported
+            if (Desktop.isDesktopSupported()) {
+                // Get the Desktop instance
+                Desktop desktop = Desktop.getDesktop();
+
+                // Check if the file exists
+                if (file.exists()) {
+                    // Open the file with the default text editor
+                    desktop.open(file);
+                } else {
+                    System.out.println("File not found: " + "LeaderBoard.txt");
+                }
+            } else {
+                System.out.println("Desktop is not supported.");
+            }
+        } catch (IOException e) {
+            System.out.println("Error opening the file: " + e.getMessage());
+        }
+    }
 
     //if Pacman and a Ghost touch Pacman dies and he loses a life, return true if pacman has died
     private static boolean death() {

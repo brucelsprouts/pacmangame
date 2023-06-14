@@ -52,6 +52,15 @@ public class Controller implements KeyListener, MouseListener {
             //if clicked on the "Exit" text set exitClicked to true
             Board.exitClicked = true;
         }//if
+
+        //When pacman has no lives allow a button to be clicked to show the leaderboard
+        if (Game.pacmanLives <= 0) {
+            if (mouseX >= Board.WIDTH - 370 && mouseX <= Board.WIDTH - 190 &&
+                    mouseY >= Board.HEIGHT - 40 && mouseY <= Board.HEIGHT - 20) {
+                // if clicked on the "Show LeaderBoard" text set showLeaderBoard to true
+                Board.showLeaderBoard = true;
+            }//if
+        }//if
     }//end of mousePressed
 
     public void mouseClicked(MouseEvent e) { 
