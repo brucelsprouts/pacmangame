@@ -1,15 +1,22 @@
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
 public class Game extends JFrame implements Runnable {
     private Board board;
 
-    static int pacmanLives = 3;
+    static int pacmanLives = 1;
     static int score = 0;
     static int finalScore = 0;
     static int counter = 0;
@@ -41,6 +48,7 @@ public class Game extends JFrame implements Runnable {
                 Board.gameOver = true;
                 if (count == 0) {
                     finalScore = score;
+                    updateScore();
                     count++;
                 }
             }
@@ -83,14 +91,57 @@ public class Game extends JFrame implements Runnable {
     }
 
     private static void updateScore() {
-        try {
-            BufferedImage leaderBoard = ImageIO.read(new File("LeaderBoard.txt"));
-            
+        List<Integer> topScores = new ArrayList<>();
+        // Read scores from the text file
+        try (BufferedReader reader = new BufferedReader(new FileReader("StoredScores.txt"))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                if (!line.isEmpty()) {
+                    String currScore = line.trim();
+                    int parsedScore;
+                    try {
+                        parsedScore = Integer.parseInt(currScore);
+                        topScores.add(parsedScore);
+                    } catch (Throwable e) {
 
-            PrintWriter output = new PrintWriter("LeaderBoard.txt");
+                    }
+                }
+            }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println("Failed to read scores from the file: " + e.getMessage());
         }
+
+        // Add the newest score
+        topScores.add(finalScore);
+
+        // Sort the scores in descending order
+        Collections.sort(topScores, Collections.reverseOrder());
+
+        // Trim the list to keep only the top 10 scores
+        if (topScores.size() > 10) {
+            topScores = topScores.subList(0, 10);
+        }
+
+        // Output the leaderboard to the text file
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("LeaderBoard.txt"));
+             BufferedWriter writer2 = new BufferedWriter(new FileWriter("StoredScores.txt"))) {
+            // Write the top scores
+            writer.write("|-------------LeaderBoard-------------|\n");
+            writer2.write("LeaderBoard:\n");
+            for (int i = 0; i < topScores.size(); i++) {
+                writer.write("\t\t" + (i+1) + ". " + topScores.get(i) + "\n");
+                writer2.write(topScores.get(i) + "\n");
+            }
+            writer.write("|-------------------------------------|\n");
+
+            // Write the newest score
+            writer.write("\nNewest Score: " + finalScore);
+            writer2.write("\nNewest Score: " + finalScore);
+        } catch (IOException e) {
+            System.err.println("Failed to write to the file: " + e.getMessage());
+        }
+
+        System.out.println("Leaderboard generated and saved to LeaderBoard.txt");
     }
 
     private static boolean death() {
