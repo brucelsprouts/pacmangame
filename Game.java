@@ -20,7 +20,7 @@ import javax.swing.JFrame;
 public class Game extends JFrame implements Runnable {
     private Board board;
 
-    static int pacmanLives = 1;     //Determines how many lives pacman has
+    static int pacmanLives = 3;     //Determines how many lives pacman has
     static int score = 0;           //The score pacman has as he collects pellets
     static int finalScore = 0;      //The final score when pacman dies
     static int pelletCounter = 0;   //Counts pellets to determine if all on screen are collected
