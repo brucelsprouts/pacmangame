@@ -60,6 +60,12 @@ public class Controller implements KeyListener, MouseListener {
                 // if clicked on the "Show LeaderBoard" text set showLeaderBoard to true
                 Board.showLeaderBoard = true;
             }//if
+
+            if (mouseX >= Board.WIDTH - 100 && mouseX <= Board.WIDTH - 20 &&
+                    mouseY >= Board.HEIGHT - 70 && mouseY <= Board.HEIGHT - 50) {
+                // if clicked on the "Restart" text set restart to true
+                Game.restart = true;
+            }//if
         }//if
     }//end of mousePressed
 
