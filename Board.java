@@ -1,19 +1,26 @@
+/* Classname: Board
+ * Created By: Hassaan Sabir and Bruce Lin
+ * Last Modified: 2023/06/13
+ * Description: Creates the board, and draws all the required images
+ *              onto the board including pacman, the 4 ghosts, maze walls,
+ *              pellets, and text
+ * */
+
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
-public class Board extends JPanel /*implements KeyListener, MouseListener*/ {
-    static final int WIDTH = 560;
-    static final int HEIGHT = 700;
-    static final int GRID_SIZE = 20;
-    static final int PACMAN_RADIUS = 10;
-    static boolean exitClicked = false;
-    static boolean menu = true;
-    static boolean gameOver = false;
+public class Board extends JPanel {
+    static final int WIDTH = 560;           //Width of board
+    static final int HEIGHT = 700;          //Height of board
+    static final int GRID_SIZE = 20;        //Size of each grid
+    static final int PACMAN_RADIUS = 10;    //Pacman's size
+    static boolean exitClicked = false;     //if exit button is clicked
+    static boolean menu = true;             //if menu screen should be shown
+    static boolean gameOver = false;        //if game over screen should be shown
 
     //Menu and GameOver Image
     private Image menuImage;
@@ -36,8 +43,10 @@ public class Board extends JPanel /*implements KeyListener, MouseListener*/ {
     private Image pinkLeft;
     private Image pinkRight;
 
+    //arraylist to store information about the 4 ghosts
     static ArrayList<Ghost> gList = new ArrayList<>();
 
+    //Shows information for every grid on the map
     //0 = empty space, 1 = wall, 2 = pellet, 3 = ghost gate
     static int[][] mapData = {
         {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,},
@@ -73,8 +82,10 @@ public class Board extends JPanel /*implements KeyListener, MouseListener*/ {
         {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,}
     };
 
+    //Clone mapData to mapObjects
     static int[][] mapObjects = new int[mapData.length][mapData[0].length];
 
+    //Creates the Board
     public Board() {
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
         setBackground(Color.BLACK);
@@ -85,15 +96,18 @@ public class Board extends JPanel /*implements KeyListener, MouseListener*/ {
 
         // Load the Menu, Pacman and Ghost images
         try {
+            //Menu/GameOver Images
             menuImage = ImageIO.read(new File("img/titlescreen.jpg"));
             gameOverImage = ImageIO.read(new File("img/gameover.jpg"));
 
+            //Pacman Images
             pacmanImage = ImageIO.read(new File("img/pacman.jpg"));
             pacmanUpImage = ImageIO.read(new File("img/pacmanup.jpg"));
             pacmanDownImage = ImageIO.read(new File("img/pacmandown.jpg"));
             pacmanLeftImage = ImageIO.read(new File("img/pacmanleft.jpg"));
             pacmanRightImage = ImageIO.read(new File("img/pacmanright.jpg"));
 
+            //Ghost Images
             redLeft = ImageIO.read(new File("img/RedLeft.jpg"));
             redRight = ImageIO.read(new File("img/RedRight.jpg"));
             blueLeft = ImageIO.read(new File("img/BlueLeft.jpg"));
@@ -106,6 +120,7 @@ public class Board extends JPanel /*implements KeyListener, MouseListener*/ {
             e.printStackTrace();
         }
 
+        //Add the different ghosts to the array list
         Ghost redGhost = new Ghost(redLeft, redRight, 260, 300);
         gList.add(redGhost);
         Ghost blueGhost = new Ghost(blueLeft, blueRight, 280, 300);
@@ -115,39 +130,50 @@ public class Board extends JPanel /*implements KeyListener, MouseListener*/ {
         Ghost pinkGhost = new Ghost(pinkLeft, pinkRight, 280, 280);
         gList.add(pinkGhost);
 
+        //Create a pacman
         Pacman pacman = new Pacman(pacmanLeftImage, pacmanRightImage, pacmanUpImage, pacmanDownImage, pacmanImage);
-    }
+    }//endo of Board
 
+    //Updates the game
     public static void updateGame() {
+        //moves pacman
         Pacman.teleportPacman();
         Pacman.validPacmanMove();
+        Pacman.pickPellet();
+
+        //moves ghosts
         for (int i = 0; i < gList.size(); i++) {
             Ghost aGhost = gList.get(i);
             aGhost.ghostMove();
-        }
-        Pacman.pickPellet();
-        exit();
-    }
+        }//for
 
+        //exits if exit is clicked
+        exit();
+    }//end of updateGame
+
+    //// Check if the "Exit" text was clicked
     public static void exit() {
-        // Check if the "Exit" text was clicked
         if (exitClicked) {
             System.exit(0);
-        }
-    }
+        }//if
+    }//end of exit
 
     //-----------------------------------PAINT STUFF--------------------------------------//
 
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
+        //check if the menu should be drawn
         if (menu) {
             // Draw Menu
             g.drawImage(menuImage, 0, 0, WIDTH, HEIGHT, this);
+            
+        //check if the game over screen should be drawn
         } else if (gameOver) {
+            // Draw Game Over Screen
             g.drawImage(gameOverImage, 0, 0, WIDTH, HEIGHT - 20, this);
 
-            // Draw the high score counter
+            // Draw the final score
             g.setColor(Color.YELLOW);
             g.setFont(new Font("Arial", Font.BOLD, 20));
             g.drawString("Score: " + Game.finalScore, 10, HEIGHT - 20);
@@ -157,27 +183,29 @@ public class Board extends JPanel /*implements KeyListener, MouseListener*/ {
             g.setFont(new Font("Arial", Font.BOLD, 20));
             g.drawString("Exit", WIDTH - 70, HEIGHT - 20);
 
+        //if menu and game over should not be drawn, drawn the actual game
         } else {
 
             // Draw Pacman based on the current direction
             Image pacImage = pacmanImage;
             switch (Pacman.pacmanDirection) {
-                case 0:
+                case 0: //right
                     pacImage = pacmanRightImage;
                     break;
-                case 1:
+                case 1: //down
                     pacImage = pacmanDownImage;
                     break;
-                case 2:
+                case 2: //left
                     pacImage = pacmanLeftImage;
                     break;
-                case 3:
+                case 3: //up
                     pacImage = pacmanUpImage;
                     break;
-                case 4:
+                case 4: //standing still
                     pacImage = pacmanImage;
-            }
+            }//switch
 
+            //draw pacman using provided direction
             g.drawImage(pacImage, Pacman.pacmanX, Pacman.pacmanY, PACMAN_RADIUS * 2, PACMAN_RADIUS * 2, this);
 
             // Draw Ghost based on the current direction for all 4 ghosts
@@ -186,17 +214,18 @@ public class Board extends JPanel /*implements KeyListener, MouseListener*/ {
 
                 Image ghostImage = aGhost.getGhostLeft();
                 switch (aGhost.getGhostDirection()) {
-                    case 0:
+                    case 0: //left
                         ghostImage = aGhost.getGhostLeft();
                         break;
-                    case 1:
+                    case 1: //right
                         ghostImage = aGhost.getGhostRight();
                         break;
-                }
+                }//switch
 
+                //draw ghost using provided direction
                 g.drawImage(ghostImage, aGhost.getGhostX(), aGhost.getGhostY(), PACMAN_RADIUS * 2, PACMAN_RADIUS * 2,
                         this);
-            }
+            }//for
 
             // Draw Maze (mapObjects)
             g.setColor(Color.BLUE);
@@ -208,7 +237,7 @@ public class Board extends JPanel /*implements KeyListener, MouseListener*/ {
                 }
             }
 
-            // Draw Objects (mapObjects)
+            // Draw Pellets (mapObjects)
             g.setColor(Color.YELLOW);
             for (int x = 0; x < mapObjects.length; x++) {
                 for (int y = 0; y < mapObjects[x].length; y++) {
@@ -228,7 +257,7 @@ public class Board extends JPanel /*implements KeyListener, MouseListener*/ {
                 }
             }
 
-            // Draw Pacmna Lives
+            // Draw Pacman Lives
             g.setColor(Color.YELLOW);
             g.setFont(new Font("Arial", Font.BOLD, 20));
             g.drawString("Lives: " , 10, HEIGHT - 50);
@@ -236,7 +265,7 @@ public class Board extends JPanel /*implements KeyListener, MouseListener*/ {
                 g.drawImage(pacmanRightImage, i*30+50, HEIGHT - 70, this);
             }
 
-            // Draw the high score counter
+            // Draw the score counter
             g.setColor(Color.YELLOW);
             g.setFont(new Font("Arial", Font.BOLD, 20));
             g.drawString("Score: " + Game.score, 10, HEIGHT - 20);
@@ -246,6 +275,6 @@ public class Board extends JPanel /*implements KeyListener, MouseListener*/ {
             g.setFont(new Font("Arial", Font.BOLD, 20));
             g.drawString("Exit", WIDTH - 70, HEIGHT - 20);
         }
-    }
+    }//end of paintComponent
     // ---------------------------------PAINT STUFF ENDS-----------------------------------//
-}
+}//end of class
