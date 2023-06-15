@@ -36,22 +36,25 @@ public class Controller implements KeyListener, MouseListener {
                 if (Board.menu) {
                     Game.pacmanLives = 1;
                     Board.menu = false;
+                    Board.gameOver = false;
                 }
                 break;
             case KeyEvent.VK_2: // Set Lives to 2
                 if (Board.menu) {
                     Game.pacmanLives = 2;
                     Board.menu = false;
+                    Board.gameOver = false;
                 }
                 break;
             case KeyEvent.VK_3: // Set Lives to 3
                 if (Board.menu) {
                     Game.pacmanLives = 3;
                     Board.menu = false;
+                    Board.gameOver = false;
                 }
                 break;
         }//switch
-    }//end of keyPressed
+    }//end of keyPressed 
 
     //check if the mouse is pressed
     public void mousePressed(MouseEvent e) {

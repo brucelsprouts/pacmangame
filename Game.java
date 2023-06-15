@@ -59,6 +59,7 @@ public class Game extends JFrame implements Runnable {
                 score = 0;
                 finalScore = 0;
                 count = 0;
+                pelletCounter = 0;
 
                 // reset ghosts
                 Board.gList.clear();

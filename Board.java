@@ -174,7 +174,7 @@ public class Board extends JPanel {
         //check if the game over screen should be drawn
         } else if (gameOver) {
             // Draw Game Over Screen
-            g.drawImage(gameOverImage, 0, 0, WIDTH, HEIGHT - 20, this);
+            g.drawImage(gameOverImage, 0, 0, WIDTH, HEIGHT - 30, this);
 
             // Draw the final score
             g.setColor(Color.YELLOW);
