@@ -4,10 +4,10 @@ LeaderBoard:
 155
 149
 144
+137
 104
 90
 84
 71
-70
 
-Newest Score: 7
+Newest Score: 137
